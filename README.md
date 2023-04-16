@@ -1,7 +1,23 @@
-# face-crop
+# vue-facecrop
 
-Crop an Image and scale it to 600x800
+Crop an Image 
+Uploaded Image is scaled up to meet at least 600x800. Cropped is to saved as 600x800 px
 
+## Browser-App
+The Images are not processed serverside, the Imges stays in the Browser-Window
+
+## Screenshots
+![screenshot](/doc/media/screenshot.jpg?raw=true "Screenshot")
+
+## Docker
+
+```docker run --rm -p 80:8080 mschwehl/vue-facecrop:latest```
+
+# TODO
+- Settings are just a mockup, code to make them work
+- Face-Detect
+
+---
 ## Project setup
 ```
 npm install
