@@ -3,6 +3,8 @@
 Crop an Image 
 Uploaded Image is scaled up to meet at least 600x800. Cropped is to saved as 600x800 px
 
+This simple page use the superb https://github.com/advanced-cropper/vue-advanced-cropper
+
 ## Browser-App
 The Images are not processed serverside, the Imges stays in the Browser-Window
 

@@ -191,15 +191,15 @@
                           <div class="flex flex-wrap -mx-3 mb-6">
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                                x-pixel
+                                Width
                               </label>
-                              <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="X">
+                              <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name"  v-model="settingWidth" type="text" placeholder="X">
                               </div>
                             <div class="w-full md:w-1/2 px-3">
                               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                                y-pixel
+                                Y-Pixel
                               </label>
-                              <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Y">
+                              <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" v-model="settingHeigth" id="grid-last-name" type="text" placeholder="Y">
                             </div>
                           </div>
                         </form>
@@ -225,12 +225,15 @@ import Pica from "pica";
 import {  Resizer, ImageSize } from "@/assets/js/resizer"
 
 export default {
-  name: "App",
+  name: "ImageCrop",
   data() {
     return {
       image:
-        "@/assets/image/pexels-andrea-piacquadio.jpg",
+        "src/assets/image/pexels-andrea-piacquadio.jpg",
       fileName : "",
+      ratio : "fixed",
+      settingWidth: "600",
+      settingHeigth: "800",
     };
   },
   
@@ -241,8 +244,8 @@ export default {
       const { canvas } = this.$refs.cropper.getResult();
       const resultCanvas = document.createElement("canvas");
 
-      resultCanvas.height = 800;
-      resultCanvas.width = 600;
+      resultCanvas.height = this.settingHeigth;
+      resultCanvas.width = this.settingWidth;
       
       await pica.resize(canvas, resultCanvas, {
         unsharpAmount: 25,
@@ -268,8 +271,8 @@ export default {
       const { canvas } = this.$refs.cropper.getResult();
       const resultCanvas = document.createElement("canvas");
 
-      resultCanvas.height = 800;
-      resultCanvas.width = 600;
+      resultCanvas.height = this.settingHeigth;
+      resultCanvas.width  = this.settingWidth;
       
       await pica.resize(canvas, resultCanvas, {
         unsharpAmount: 25,
@@ -290,6 +293,8 @@ export default {
       
       document.body.removeChild(resultCanvas);
     },
+
+   
 
     async uploadImage(event) {
       // Reference to the DOM input element
@@ -314,10 +319,10 @@ export default {
             var imageH = sizE[1];
 
           //    this.image = "";
-              if (imageW < 600 || imageH < 800) {
+              if (imageW < this.settingWidth || imageH < this.settingHeigth) {
 
-                console.log("need resize: " + imageW + "," + imageH);   
-                const sized = Resizer(input.files[0],600,800).then( e =>
+                console.log("need resize: " + imageW + "," + imageH + " to " + this.settingWidth + ", " + this.settingHeigth);   
+                const sized = Resizer(input.files[0],this.settingWidth,this.settingHeigth).then( e =>
                     this.image = e
                 )
                 
