@@ -9,6 +9,7 @@
   "dependencies": {
     "canvas": "^2.11.2",
     "face-api.js": "^0.20.0",
+    "math-expression-evaluator": "^2.0.2",
     "pica": "^9.0.1",
     "vue": "^3.2.13",
     "vue-advanced-cropper": "^2.8.8",

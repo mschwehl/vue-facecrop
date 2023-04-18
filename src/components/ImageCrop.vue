@@ -33,17 +33,12 @@
                   :zoomable="false"
                   :auto-zoom="false"
                   :default-boundaries="fit"
-                  :resizeImage="{ wheel: false }"
+                  :resizeImage="{ wheel: true }"
                   :move-image="false"
                   :fit-visible-area="visibleArea"
                   :default-visible-area="visibleArea"
-  
-                  :stencil-props="{
-                    handlers: {},
-                    movable: true,
-                    resizable: true,
-                    aspectRatio: 3/4,
-                  }" />
+                  :stencil-props="myStencilProps"
+   />
           </div>
   
           
@@ -215,27 +210,14 @@
                       Ratio
                     </label>
                     <div class="relative">
-                      <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                        <option>Fixed</option>
-                        <option>Free</option>
-                      </select>
-                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                      </div>
+                      <input size="6" class="appearance-none block bg-gray-200 text-gray-700 border border-gray-200 rounded leading-tight focus:outline-none focus:bg-white"  v-model="settingRatio" v-on:blur="updateRatio($event)"  id="myID" type="text" >
                     </div>
                   </div>
   
   
       <hr class="dark:border-gray-700/60" />
   
-                  <div>
-                    <label  for="myID">
-                      Ratio
-                    </label>
-                    <input size="4"  id="myID" type="text" >
-  
-                  </div>
-  
+         
       </aside>
   
   
@@ -247,21 +229,57 @@
   
   import Pica from "pica";
   import {  Resizer, ImageSize } from "@/assets/js/resizer"
-  
+  import Mexp from "math-expression-evaluator"
+
+
   export default {
     name: "ImageCrop",
     data() {
+
+      const myStencilProps = {
+        aspectRatio: 3/4,
+        movable: true,
+        scalable: true
+      }
+
       return {
+
+
+
         image:
           "src/assets/image/pexels-andrea-piacquadio.jpg",
         fileName : "",
-        ratio : "fixed",
+        settingRatio : "3/4",
         settingWidth: "600",
         settingHeigth: "800",
+        myStencilProps,
+
       };
     },
     
     methods: {
+
+      updateRatio(){
+
+        try {
+          const mexp = new Mexp() 
+          var value = mexp.eval(this.settingRatio); // 2 + 2
+
+          this.myStencilProps.aspectRatio = value;
+
+          console.log("expr=" + value);
+
+
+        } catch(e) {
+          this.myStencilProps.aspectRatio = null;
+          console.log(e)
+        }
+
+        console.log(this.settingRatio)
+
+      }, 
+
+
       async cropImage() {
         const pica = new Pica();
         
